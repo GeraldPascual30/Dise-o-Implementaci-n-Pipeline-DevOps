@@ -1,0 +1,11 @@
+route:
+  receiver: app-webhook
+  group_wait: 10s
+  group_interval: 30s
+  repeat_interval: 1h
+
+receivers:
+  - name: app-webhook
+    webhook_configs:
+      - url: http://app:3000/api/alerts
+        send_resolved: true

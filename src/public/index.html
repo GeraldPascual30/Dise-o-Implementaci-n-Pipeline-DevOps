@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DevOps Task Board</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="hero">
+        <p class="eyebrow">Proyecto DevOps</p>
+        <h1>Task Board para demostrar CI/CD, Docker y monitoreo</h1>
+        <p class="subtitle">
+          Aplicacion simple de gestion de tareas con backend Node.js, persistencia SQLite,
+          pruebas automatizadas y observabilidad basica.
+        </p>
+      </section>
+
+      <section class="panel panel-form">
+        <div class="panel-header">
+          <h2>Nueva tarea</h2>
+          <button id="refreshButton" class="secondary">Actualizar tablero</button>
+        </div>
+
+        <form id="taskForm" class="task-form">
+          <label>
+            Titulo
+            <input id="title" name="title" type="text" minlength="3" maxlength="120" required />
+          </label>
+
+          <label>
+            Descripcion
+            <textarea id="description" name="description" maxlength="500"></textarea>
+          </label>
+
+          <div class="row">
+            <label>
+              Estado
+              <select id="status" name="status">
+                <option value="todo">Por hacer</option>
+                <option value="in_progress">En progreso</option>
+                <option value="done">Hecha</option>
+              </select>
+            </label>
+
+            <label>
+              Prioridad
+              <select id="priority" name="priority">
+                <option value="low">Baja</option>
+                <option value="medium" selected>Media</option>
+                <option value="high">Alta</option>
+              </select>
+            </label>
+          </div>
+
+          <button type="submit">Guardar tarea</button>
+        </form>
+      </section>
+
+      <section class="panel panel-stats">
+        <div class="panel-header">
+          <h2>Resumen</h2>
+          <span id="systemStatus" class="pill">Cargando...</span>
+        </div>
+        <div id="statsGrid" class="stats-grid"></div>
+      </section>
+
+      <section class="panel panel-board">
+        <div class="panel-header">
+          <h2>Tareas registradas</h2>
+          <span id="taskCount" class="pill">0 tareas</span>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>

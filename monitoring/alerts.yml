@@ -1,0 +1,20 @@
+groups:
+  - name: devops-task-board.rules
+    rules:
+      - alert: ApplicationDown
+        expr: up{job="devops-task-board"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: La aplicacion no responde
+          description: Prometheus no pudo recopilar metricas de la aplicacion durante 1 minuto.
+
+      - alert: TaskBacklogHigh
+        expr: task_board_total_tasks > 15
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: El backlog de tareas es alto
+          description: El tablero supero las 15 tareas y puede requerir revision operativa.
