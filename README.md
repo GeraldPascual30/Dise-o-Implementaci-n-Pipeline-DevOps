@@ -1,8 +1,17 @@
 # DevOps Task Board
 
-Proyecto base para un trabajo practico de DevOps. Incluye una aplicacion web simple con frontend HTML/CSS/JavaScript, backend Node.js/Express, persistencia SQLite, pruebas automatizadas, contenedores Docker, pipeline CI/CD y monitoreo basico.
+Proyecto académico para practicar desarrollo y operaciones con un tablero de tareas. Incluye una aplicacion web simple con frontend HTML/CSS/JavaScript, backend Node.js/Express, persistencia SQLite, pruebas automatizadas, contenedores Docker, pipeline CI/CD y monitoreo basico.
 
-## Objetivo academico
+## Cómo revisar este proyecto
+
+- [API REST](src/routes/api.js) y [servicio de tareas](src/services/taskService.js).
+- [Pruebas unitarias](tests/unit/taskService.test.js) y [pruebas de integración](tests/integration/api.test.js).
+- [Pipeline de integración](.github/workflows/ci.yml) y [configuración de entrega](.github/workflows/cd.yml).
+- [Instalación](docs/installation.md) y [manual de operaciones](docs/operations.md).
+
+La configuración de CI/CD y monitoreo está versionada. El despliegue remoto requiere configurar el destino y los secretos; el repositorio no acredita por sí solo un servicio de producción activo.
+
+## Objetivo académico
 
 Demostrar un flujo DevOps de punta a punta:
 
@@ -15,18 +24,14 @@ Demostrar un flujo DevOps de punta a punta:
 
 ## Arquitectura
 
-```text
-Frontend estatico -> Express API -> SQLite
-                        |
-                        +-> /api/health
-                        +-> /api/metrics
-                        +-> /api/alerts
+El frontend consume la API Express; SQLite conserva las tareas. Prometheus consulta las métricas de la aplicación y Grafana presenta los paneles. Los logs se envían a Loki mediante Promtail.
 
-Prometheus -> scrape /api/metrics
-Alertmanager -> envia alertas a /api/alerts
-Promtail -> recolecta logs de Docker -> Loki
-Grafana -> visualiza Prometheus + Loki
-GitHub Actions -> lint + test + build + smoke test + publish/deploy
+```mermaid
+flowchart TD
+    UI["Frontend HTML CSS JavaScript"] --> API["API Express"]
+    API --> DB["SQLite"]
+    API --> OBS["Prometheus y Loki"]
+    OBS --> G["Grafana"]
 ```
 
 ## Funcionalidades
@@ -50,22 +55,14 @@ GitHub Actions -> lint + test + build + smoke test + publish/deploy
 
 ## Estructura del repositorio
 
-```text
-.
-|-- src/
-|   |-- config/
-|   |-- db/
-|   |-- middleware/
-|   |-- public/
-|   |-- routes/
-|   `-- services/
-|-- tests/
-|-- scripts/
-|-- monitoring/
-|-- grafana/
-|-- docs/
-`-- .github/workflows/
-```
+| Directorio | Contenido |
+| --- | --- |
+| `src/` | API, servicios, persistencia y frontend. |
+| `tests/` | Pruebas unitarias y de integración. |
+| `scripts/` | Despliegue y smoke test. |
+| `monitoring/` y `grafana/` | Métricas, logs, alertas y paneles. |
+| `docs/` | Guías de instalación, operación y pipeline. |
+| `.github/workflows/` | Configuración de CI/CD. |
 
 ## Ejecucion local sin Docker
 
